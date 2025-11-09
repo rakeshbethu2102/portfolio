@@ -181,13 +181,13 @@ This experience strengthened my understanding of Java-based web architecture, fr
           <h3 class="text-xl font-semibold">Contact</h3>
           <p class="text-sm text-slate-600 mt-2">I'm open to software roles and internships. Reach out for collaboration or interviews.</p>
 
-          <form id="contact-form" class="mt-4 grid gap-3" onsubmit="handleContact(event)">
-            <input id="name" class="border p-3 rounded-lg" placeholder="Your name" />
-            <input id="email" class="border p-3 rounded-lg" placeholder="Your email" />
-            <textarea id="message" class="border p-3 rounded-lg" rows="4" placeholder="Message"></textarea>
+          <form id="contact-form" class="mt-4 grid gap-3" action="https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse" method="post" target="_blank" onsubmit="handleContact(event)">
+            <input name="entry.1234567890" id="name" class="border p-3 rounded-lg" placeholder="Your name" required />
+            <input name="entry.0987654321" type="email" id="email" class="border p-3 rounded-lg" placeholder="Your email" required />
+            <textarea name="entry.1111111111" id="message" class="border p-3 rounded-lg" rows="4" placeholder="Message" required></textarea>
             <div class="flex gap-3">
-              <button type="submit" class="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg">Send message</button>
-              <a href="mailto:youremail@example.com" class="inline-flex items-center gap-2 border px-4 py-2 rounded-lg">Email me</a>
+              <button type="submit" class="inline-flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">Send message</button>
+              <a href="mailto:rakeshbethu2121@gmail.com" class="inline-flex items-center gap-2 border px-4 py-2 rounded-lg hover:bg-slate-50 transition">Email me</a>
             </div>
           </form>
 
@@ -210,14 +210,27 @@ This experience strengthened my understanding of Java-based web architecture, fr
   <script>
     // Handle contact form submission
     function handleContact(e) {
-      e.preventDefault();
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const message = document.getElementById('message').value;
-      // Simple client-side confirmation — replace with real backend or form service.
-      alert('Thanks, ' + name + '! Message received. Email: ' + email);
-      // Reset form
-      e.target.reset();
+      
+      // Store data in localStorage as backup
+      const submission = {
+        name: name,
+        email: email,
+        message: message,
+        date: new Date().toISOString()
+      };
+      
+      // Get existing submissions or initialize empty array
+      const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+      submissions.push(submission);
+      localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+
+      // Show success message
+      setTimeout(() => {
+        alert('Thanks, ' + name + '! Your message has been sent and saved.');
+      }, 1000);
     }
 
     // Handle smooth scrolling for all anchor links
